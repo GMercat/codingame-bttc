@@ -5,6 +5,12 @@
 
 using namespace std;
 
+struct Coord {
+	Coord(const int& aX, const int& aY) : mX(aX), mY(aY) {};
+	int mX;
+	int mY;
+};
+
 struct Case {
    int mOwner;
 
@@ -18,11 +24,11 @@ struct Case {
       }
    }
 
-   bool isMine() {
+   bool isMine () const {
       return mOwner == 0;
    }
 
-   bool isEmpty() {
+   bool isEmpty () const {
       return mOwner == -1;
    }
 };
@@ -30,10 +36,31 @@ struct Case {
 class Plateau {
 public:
    Plateau () {}
-   void setLine(const int& aIndLine, const string& aLine) {
+
+   const Case& getCase(const int& aX, const int& aY) const{
+	   return mPlateau[aY][aX];
+   }
+
+   const Case& getCase (const Coord& aCoord) const{
+	   return mPlateau[aCoord.mY][aCoord.mX];
+   }
+
+   void setLine (const int& aIndLine, const string& aLine) {
       for (unsigned int col = 0; col < aLine.length(); ++col) {
          mPlateau[aIndLine][col].setValue(&aLine[col]);
       }
+   }
+
+   int getNbEmptyCase (const Coord& aCoord1, const Coord& aCoord2) const {
+	   int counter = 0;
+	   for (int y = aCoord1.mY; y <= aCoord2.mY; ++y) {
+		   for (int x = aCoord1.mX; x <= aCoord2.mX; ++x) {
+			   if (getCase(x, y).isEmpty()) {
+				   ++counter;
+			   }
+		   }
+	   }
+	   return counter;
    }
 
 private:
