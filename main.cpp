@@ -196,7 +196,6 @@ Coord strategyFearful (Board& aBoard, const Opponent::Vect& aOpponents) {
          const Case& currentCase    = aBoard.getCase (x, y);
          const Coord currentCoord   = Coord (x, y);
          const int   distToMe       = distance (myCoord, currentCoord);
-         cerr << "CurrenCase(" << currentCase.mOwner << ")" << endl;
          if (currentCase.isEmpty ()) {
             if (aBoard.isEmpty (myCoord, currentCoord)) {
                if (distToMe <= maxDist) {
@@ -271,11 +270,18 @@ int main()
       // To debug: cerr << "Debug messages..." << endl;
       string targetStr;
       if (gameRound == 1) {
+          cerr << "First round" << endl;
          targetCoord = strategyFearful (board, opponents);
+         originCoord = opponents[0].mCoord;
+         cerr << targetCoord.getCoordStr() << endl;
+         cerr << originCoord.getCoordStr() << endl;
       } else {
+          cerr << "round =" << gameRound << endl;
          if (targetCoord == opponents[0].mCoord && targetCoord != originCoord) {
+            cerr << "Target Ok back to origin" << endl;
             targetCoord = originCoord;
          } else if (targetCoord == opponents[0].mCoord) {
+             cerr << "New target" << endl;
             targetCoord = strategyFearful (board, opponents);
          }
       }
